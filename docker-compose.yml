@@ -1,17 +1,17 @@
-version: '3.9'
-services: 
+version: '3.3'
+services:
   backend:
     build: .
-    ports: 
+    ports:
       - 8000:3000
     volumes: [.:/app]
-    depends_on: 
+    depends_on:
       - db
-      
-  db: 
+
+  db:
     image: mysql:5.7.22
     restart: always
-    environment: 
+    environment:
       MYSQL_DATABASE: admin
       MYSQL_USER: root
       MYSQL_PASSWORD: 123456
