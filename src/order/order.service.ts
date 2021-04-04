@@ -24,6 +24,7 @@ export class OrderService extends AbstractService {
         email: order.email,
         total: order.total,
         created_at: order.created_at,
+        order_items: order.order_items,
       })),
       meta,
     };
