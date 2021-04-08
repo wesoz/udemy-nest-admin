@@ -70,7 +70,7 @@ export class AuthController {
   @Get('user')
   async user(@Req() request: Request) {
     const id = await this.authService.userId(request);
-    this.userService.findOne({ id });
+    return this.userService.findOne({ id });
   }
 
   @UseGuards(AuthGuard)
