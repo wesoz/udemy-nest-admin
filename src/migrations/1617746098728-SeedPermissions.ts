@@ -1,8 +1,17 @@
+import { Permission } from 'src/permission/permission.entity';
 import { getRepository, MigrationInterface, QueryRunner } from 'typeorm';
 
 export class SeedPermissions1617746098728 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const permissions = await getRepository('permissions').save([
+    await getRepository('permissions').save(this.getPermissions());
+
+    await getRepository('roles').save(this.getRoles());
+
+    await getRepository('user').save(this.getUsers());
+  }
+
+  private getPermissions(): Permission[] {
+    return [
       { id: 1, name: 'view_users' },
       { id: 2, name: 'edit_users' },
       { id: 3, name: 'view_roles' },
@@ -11,15 +20,36 @@ export class SeedPermissions1617746098728 implements MigrationInterface {
       { id: 6, name: 'edit_products' },
       { id: 7, name: 'view_orders' },
       { id: 8, name: 'edit_orders' },
-    ]);
+    ];
+  }
 
-    const roles = await getRepository('roles').save([
-      { id: 1, name: 'Admin', permissions: [1, 2, 3, 4, 5, 6, 7, 8] },
-      { id: 2, name: 'Editor', permissions: [6, 8] },
-      { id: 3, name: 'Viewer', permissions: [1, 3, 5, 7] },
-    ]);
+  private getRoles(): any[] {
+    return [
+      {
+        id: 1,
+        name: 'Admin',
+        permissions: [
+          { id: 1 },
+          { id: 2 },
+          { id: 3 },
+          { id: 4 },
+          { id: 5 },
+          { id: 6 },
+          { id: 7 },
+          { id: 8 },
+        ],
+      },
+      { id: 2, name: 'Editor', permissions: [{ id: 6 }, { id: 8 }] },
+      {
+        id: 3,
+        name: 'Viewer',
+        permissions: [{ id: 1 }, { id: 3 }, { id: 5 }, { id: 7 }],
+      },
+    ];
+  }
 
-    await getRepository('user').save([
+  private getUsers(): any[] {
+    return [
       {
         id: 1,
         first_name: 'Super',
@@ -299,7 +329,7 @@ export class SeedPermissions1617746098728 implements MigrationInterface {
           '$2a$12$NHQLCIaX.IiqKoN3.FKsrOlJ5R1cnm5fjLekXI7kAiXcAyIAWlzpa',
         role: { id: 1 },
       },
-    ]);
+    ];
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {}
